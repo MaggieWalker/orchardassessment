@@ -5,3 +5,4 @@ secrets.js
 .DS_Store
 npm-debug.log
 yarn-error.log
+public/DOHMH_New_York_City_Restaurant_Inspection_Results.csv

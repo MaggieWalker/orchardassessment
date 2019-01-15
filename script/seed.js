@@ -1,24 +1,46 @@
 'use strict'
 
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {Restaurant, Violation} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
-  const users = await Promise.all([
-    User.create({email: 'cody@email.com', password: '123'}),
-    User.create({email: 'murphy@email.com', password: '123'})
+  const restaurants = await Promise.all([
+    Restaurant.create({
+      camis: '30075445',
+      dba: 'MORRIS PARK BAKE SHOP',
+      boro: 'BRONX',
+      building: '1007',
+      street: 'MORRIS PARK AVE',
+      zipcode: '10462',
+      phone: '7188924544',
+      cuisine: 'Bakery',
+      inspectiondate: new Date(Date.UTC(2017, 4, 18)),
+      action: 'Violations were cited in the following area(s).',
+      score: 7,
+      grade: 'A',
+      gradedate: new Date(Date.UTC(2017, 4, 18)),
+      recorddate: new Date(Date.UTC(2010, 0, 13)),
+      inspectiontype: 'Cycle Inspection / Initial Inspection'
+    })
   ])
 
-  console.log(`seeded ${users.length} users`)
+  const violations = await Promise.all([
+    Violation.create({
+      code: '10F',
+      description:
+        'Non-food contact surface improperly constructed. Unacceptable material used. Non-food contact surface or equipment improperly maintained and/or not properly sealed, raised, spaced or movable to allow accessibility for cleaning on all sides, above and underneath the unit.',
+      criticalflag: 'Not Critical'
+    })
+  ])
+
+  console.log(`seeded ${restaurants.length} users`)
+  console.log(`seeded ${violations.length} violations`)
   console.log(`seeded successfully`)
 }
 
-// We've separated the `seed` function from the `runSeed` function.
-// This way we can isolate the error handling and exit trapping.
-// The `seed` function is concerned only with modifying the database.
 async function runSeed() {
   console.log('seeding...')
   try {
@@ -33,12 +55,8 @@ async function runSeed() {
   }
 }
 
-// Execute the `seed` function, IF we ran this module directly (`node seed`).
-// `Async` functions always return a promise, so we can use `catch` to handle
-// any errors that might occur inside of `seed`.
 if (module === require.main) {
   runSeed()
 }
 
-// we export the seed function for testing purposes (see `./seed.spec.js`)
 module.exports = seed

@@ -2,30 +2,30 @@
 
 const {expect} = require('chai')
 const db = require('../index')
-const User = db.model('user')
+const Restaurant = db.model('restaurant')
 
-describe('User model', () => {
+describe('Restaurant model', () => {
   beforeEach(() => {
     return db.sync({force: true})
   })
 
   describe('instanceMethods', () => {
-    describe('correctPassword', () => {
-      let cody
+    describe('correctGrade', () => {
+      let sonys
 
       beforeEach(async () => {
-        cody = await User.create({
-          email: 'cody@puppybook.com',
-          password: 'bones'
+        sonys = await Restaurant.create({
+          borough: 'Brooklyn',
+          grade: 'A'
         })
       })
 
       it('returns true if the password is correct', () => {
-        expect(cody.correctPassword('bones')).to.be.equal(true)
+        expect(sonys.correctGrade('A')).to.be.equal(true)
       })
 
       it('returns false if the password is incorrect', () => {
-        expect(cody.correctPassword('bonez')).to.be.equal(false)
+        expect(sonys.correctGrade('B')).to.be.equal(false)
       })
     }) // end describe('correctPassword')
   }) // end describe('instanceMethods')
