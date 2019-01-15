@@ -23,19 +23,31 @@ async function seed() {
         return {
           camis: inspection.CAMIS,
           dba: inspection.DBA,
+          boro: inspection.BORO,
+          building: inspection.BUILDING,
+          street: inspection.STREET,
+          zipcode: inspection.ZIPCODE,
+          phone: inspection.PHONE,
+          cuisine: inspection['CUISINE DESCRIPTION'],
+          inspectiondate: inspection['INSPECTION DATE'],
+          action: inspection.ACTION,
+          violation: inspection['VIOLATION CODE'],
+          score: inspection.SCORE,
+          grade: inspection.GRADE,
+          gradedate: inspection['GRADE DATE'],
           recorddate: inspection['RECORD DATE'],
-          inspectiondate: inspection['INSPECTION DATE']
+          inspectiontype: inspection['INSPECTION TYPE']
         }
       })
     )
-    .pipe(etl.collect(385111))
+    .pipe(etl.collect(1000))
     .pipe(
       etl.map(dataArray => {
-        return Restaurant.bulkCreate(dataArray)
+        Restaurant.bulkCreate(dataArray)
       })
     )
     .promise()
-    .then(() => console.log('done for now!'))
+    .then(() => console.log('done with Restaurants!'))
     .catch(error => console.log('Caught error', error.message))
 
   console.log(`seeded successfully`)

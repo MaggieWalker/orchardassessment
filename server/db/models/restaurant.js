@@ -34,8 +34,11 @@ const Restaurant = db.define('restaurant', {
   action: {
     type: Sequelize.STRING
   },
+  violation: {
+    type: Sequelize.STRING
+  },
   score: {
-    type: Sequelize.INTEGER
+    type: Sequelize.STRING
   },
   grade: {
     type: Sequelize.STRING,
