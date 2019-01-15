@@ -2,42 +2,42 @@
 
 const db = require('../server/db')
 const {Restaurant, Violation} = require('../server/db/models')
+const fs = require('fs')
+const etl = require('etl')
+const pg = require('pg')
 
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
-  const restaurants = await Promise.all([
-    Restaurant.create({
-      camis: '30075445',
-      dba: 'MORRIS PARK BAKE SHOP',
-      boro: 'BRONX',
-      building: '1007',
-      street: 'MORRIS PARK AVE',
-      zipcode: '10462',
-      phone: '7188924544',
-      cuisine: 'Bakery',
-      inspectiondate: new Date(Date.UTC(2017, 4, 18)),
-      action: 'Violations were cited in the following area(s).',
-      score: 7,
-      grade: 'A',
-      gradedate: new Date(Date.UTC(2017, 4, 18)),
-      recorddate: new Date(Date.UTC(2010, 0, 13)),
-      inspectiontype: 'Cycle Inspection / Initial Inspection'
-    })
-  ])
+  await fs
+    .createReadStream(
+      'public/DOHMH_New_York_City_Restaurant_Inspection_Results.csv'
+    )
+    .pipe(etl.csv())
+    .pipe(
+      etl.map(inspection => {
+        inspection['RECORD DATE'] = new Date(inspection['RECORD DATE'])
+        inspection['INSPECTION DATE'] = new Date(inspection['INSPECTION DATE'])
+        inspection['GRADE DATE'] = new Date(inspection['GRADE DATE'])
+        return {
+          camis: inspection.CAMIS,
+          dba: inspection.DBA,
+          recorddate: inspection['RECORD DATE'],
+          inspectiondate: inspection['INSPECTION DATE']
+        }
+      })
+    )
+    .pipe(etl.collect(385111))
+    .pipe(
+      etl.map(dataArray => {
+        return Restaurant.bulkCreate(dataArray)
+      })
+    )
+    .promise()
+    .then(() => console.log('done for now!'))
+    .catch(error => console.log('Caught error', error.message))
 
-  const violations = await Promise.all([
-    Violation.create({
-      code: '10F',
-      description:
-        'Non-food contact surface improperly constructed. Unacceptable material used. Non-food contact surface or equipment improperly maintained and/or not properly sealed, raised, spaced or movable to allow accessibility for cleaning on all sides, above and underneath the unit.',
-      criticalflag: 'Not Critical'
-    })
-  ])
-
-  console.log(`seeded ${restaurants.length} users`)
-  console.log(`seeded ${violations.length} violations`)
   console.log(`seeded successfully`)
 }
 
@@ -60,3 +60,50 @@ if (module === require.main) {
 }
 
 module.exports = seed
+
+// const restaurants = await Promise.all([
+//   Restaurant.create({
+//     camis: '30075445',
+//     dba: 'MORRIS PARK BAKE SHOP',
+//     boro: 'BRONX',
+//     building: '1007',
+//     street: 'MORRIS PARK AVE',
+//     zipcode: '10462',
+//     phone: '7188924544',
+//     cuisine: 'Bakery',
+//     inspectiondate: new Date(Date.UTC(2017, 4, 18)),
+//     action: 'Violations were cited in the following area(s).',
+//     score: 7,
+//     grade: 'A',
+//     gradedate: new Date(Date.UTC(2017, 4, 18)),
+//     recorddate: new Date(Date.UTC(2010, 0, 13)),
+//     inspectiontype: 'Cycle Inspection / Initial Inspection'
+//   })
+// ])
+
+// Restaurant.bulkCreate({
+//   camis: inspection.CAMIS,
+//   dba: inspection.DBA,
+//   recorddate: inspection['RECORD DATE'],
+//   inspectiondate: inspection['INSPECTION DATE'],
+//   boro: inspection.BORO,
+//   building: inspection.BUILDING,
+//   street: inspection.STREET,
+//   zipcode: inspection.ZIPCODE,
+//   phone: inspection.PHONE,
+//   cuisine: inspection.CUISINE,
+//   action: inspection.ACTION,
+//   score: inspection.SCORE,
+//   grade: inspection.GRADE,
+//   gradedate: inspection['GRADE DATE'],
+//   inspectiontype: inspection['INSPECTION TYPE']
+// })
+// // .pipe(etl.postgres.upsert(pool,'testschema', 'testable', {concurrency: 4}))
+// const violations = await Promise.all([
+//   Violation.create({
+//     code: '10F',
+//     description:
+//       'Non-food contact surface improperly constructed. Unacceptable material used. Non-food contact surface or equipment improperly maintained and/or not properly sealed, raised, spaced or movable to allow accessibility for cleaning on all sides, above and underneath the unit.',
+//     criticalflag: 'Not Critical'
+//   })
+// ])

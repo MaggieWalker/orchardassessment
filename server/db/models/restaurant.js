@@ -4,7 +4,6 @@ const db = require('../db')
 const Restaurant = db.define('restaurant', {
   camis: {
     type: Sequelize.STRING,
-    primaryKey: true,
     allowNull: false
   },
   dba: {
