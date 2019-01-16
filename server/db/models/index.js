@@ -1,20 +1,21 @@
 const Restaurant = require('./restaurant')
 const Violation = require('./violation')
+const Inspection = require('./inspection')
 
-/**
- * If we had any associations to make, this would be a great place to put them!
- * ex. if we had another model called BlogPost, we might say:
- *
- *    BlogPost.belongsTo(User)
- */
+Inspection.belongsTo(Restaurant, {foreignKey: 'restaurantId'}) //one-to-one relationship
+Restaurant.hasMany(Inspection, {foreignKey: 'restaurantId'}) //one-to-many relationship
 
-/**
- * We'll export all of our models here, so that any time a module needs a model,
- * we can just require it from 'db/models'
- * for example, we can say: const {User} = require('../db/models')
- * instead of: const User = require('../db/models/user')
- */
+Inspection.belongsToMany(Violation, {
+  through: 'InspectionViolation',
+  foreignKey: 'inspectionId'
+}) //many-to-many relationship
+Violation.belongsToMany(Inspection, {
+  through: 'InspectionViolation',
+  foreignKey: 'violationId'
+}) //many-to-many relationship
+
 module.exports = {
   Restaurant,
-  Violation
+  Violation,
+  Inspection
 }

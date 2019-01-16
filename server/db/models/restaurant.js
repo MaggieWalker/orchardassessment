@@ -4,7 +4,8 @@ const db = require('../db')
 const Restaurant = db.define('restaurant', {
   camis: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    primaryKey: true
   },
   dba: {
     type: Sequelize.STRING,
@@ -32,9 +33,6 @@ const Restaurant = db.define('restaurant', {
     type: Sequelize.DATE
   },
   action: {
-    type: Sequelize.STRING
-  },
-  violation: {
     type: Sequelize.STRING
   },
   score: {

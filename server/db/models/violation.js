@@ -4,7 +4,8 @@ const db = require('../db')
 const Violation = db.define('violation', {
   code: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    primaryKey: true
   },
   description: {
     type: Sequelize.TEXT
