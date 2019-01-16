@@ -20,6 +20,7 @@ async function seed() {
         inspection['RECORD DATE'] = new Date(inspection['RECORD DATE'])
         inspection['INSPECTION DATE'] = new Date(inspection['INSPECTION DATE'])
         inspection['GRADE DATE'] = new Date(inspection['GRADE DATE'])
+
         return {
           camis: inspection.CAMIS,
           dba: inspection.DBA,
@@ -50,6 +51,29 @@ async function seed() {
     .then(() => console.log('done with Restaurants!'))
     .catch(error => console.log('Caught error', error.message))
 
+  await fs
+    .createReadStream(
+      'public/DOHMH_New_York_City_Restaurant_Inspection_Results.csv'
+    )
+    .pipe(etl.csv())
+    .pipe(
+      etl.map(inspection => {
+        return {
+          code: inspection['VIOLATION CODE'],
+          description: inspection['VIOLATION DESCRIPTION'],
+          criticalflag: inspection['CRITICAL FLAG']
+        }
+      })
+    )
+    .pipe(etl.collect(1000))
+    .pipe(
+      etl.map(dataArray => {
+        Violation.bulkCreate(dataArray)
+      })
+    )
+    .promise()
+    .then(() => console.log('done with Violations!'))
+    .catch(error => console.log('Caught error', error.message))
   console.log(`seeded successfully`)
 }
 
