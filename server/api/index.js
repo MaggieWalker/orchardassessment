@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const Restaurant = require('../db/models/restaurant')
+const Inspection = require('../db/models/inspection')
 module.exports = router
 
 router.use('/users', require('./users'))
@@ -16,7 +17,12 @@ router.get('/', async (req, res, next) => {
     const response = await Restaurant.findAll({
       where: {
         cuisine: 'Thai'
-      }
+      },
+      include: [
+        {
+          model: Inspection
+        }
+      ]
     })
     res.json(response)
   } catch (err) {
