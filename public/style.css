@@ -1,5 +1,6 @@
 body {
-  font-family: sans-serif;
+  font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+  text-align: center;
 }
 
 a {
@@ -18,4 +19,24 @@ nav a {
 form div {
   margin: 1em;
   display: inline-block;
+}
+
+table {
+  display: inline-block;
+  text-align: left;
+  border: 1px solid black;
+}
+
+td,
+th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: rgb(76, 116, 175);
+  color: white;
 }
