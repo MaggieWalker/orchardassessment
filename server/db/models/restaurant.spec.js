@@ -1,5 +1,3 @@
-/* global describe beforeEach it */
-
 const {expect} = require('chai')
 const db = require('../index')
 const Restaurant = db.model('restaurant')
@@ -15,18 +13,23 @@ describe('Restaurant model', () => {
 
       beforeEach(async () => {
         sonys = await Restaurant.create({
-          borough: 'Brooklyn',
-          grade: 'A'
+          boro: 'Brooklyn',
+          grade: 'A',
+          camis: '32456',
+          dba: 'sonys',
+          cuisine: 'Thai',
+          createdAt: new Date(),
+          updatedAt: new Date()
         })
       })
 
-      it('returns true if the password is correct', () => {
+      it('returns true if the grade is correct', () => {
         expect(sonys.correctGrade('A')).to.be.equal(true)
       })
 
-      it('returns false if the password is incorrect', () => {
+      it('returns false if the grade is incorrect', () => {
         expect(sonys.correctGrade('B')).to.be.equal(false)
       })
-    }) // end describe('correctPassword')
+    }) // end describe('correctGrade')
   }) // end describe('instanceMethods')
-}) // end describe('User model')
+}) // end describe('Restaurant model')

@@ -19,18 +19,6 @@ if (process.env.NODE_ENV === 'test') {
 
 if (process.env.NODE_ENV !== 'production') require('../secrets')
 
-// passport registration
-passport.serializeUser((user, done) => done(null, user.id))
-
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await db.models.user.findById(id)
-    done(null, user)
-  } catch (err) {
-    done(err)
-  }
-})
-
 const createApp = () => {
   // logging middleware
   app.use(morgan('dev'))
@@ -41,18 +29,6 @@ const createApp = () => {
 
   // compression middleware
   app.use(compression())
-
-  // session middleware with passport
-  app.use(
-    session({
-      secret: process.env.SESSION_SECRET || 'my best friend is Cody',
-      store: sessionStore,
-      resave: false,
-      saveUninitialized: false
-    })
-  )
-  app.use(passport.initialize())
-  app.use(passport.session())
 
   // api routes
   app.use('/api', require('./api'))
@@ -86,9 +62,7 @@ const createApp = () => {
 
 const startListening = () => {
   // start listening (and create a 'server' object representing our server)
-  const server = app.listen(PORT, () =>
-    console.log(`Mixing it up on port ${PORT}`)
-  )
+  app.listen(PORT, () => console.log(`Mixing it up on port ${PORT}`))
 }
 
 const syncDb = () => db.sync()

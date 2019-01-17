@@ -6,8 +6,8 @@ const Op = Sequelize.Op
 
 module.exports = router
 
+//Gets all Thai restaurants that have had inspections with A or B ratings after Jan 1, 2019
 router.get('/', async (req, res, next) => {
-  console.log('in user get api call')
   try {
     const response = await Restaurant.findAll({
       where: {
@@ -29,7 +29,7 @@ router.get('/', async (req, res, next) => {
     })
     res.json(response)
   } catch (err) {
-    console.log('get Food not working', err)
+    console.log('get food api call not working', err)
     next(err)
   }
 })

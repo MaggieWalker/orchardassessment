@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchFood} from '../store'
 
-class Navbar extends Component {
+class Home extends Component {
   componentDidMount() {
     this.props.loadFoodData()
     console.log('food loaded!')
@@ -61,4 +61,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar)
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
