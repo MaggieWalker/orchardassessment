@@ -1,17 +1,18 @@
 const router = require('express').Router()
-const {User} = require('../db/models')
+const {Restaurant} = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
+  console.log('in user get api call')
   try {
-    const users = await User.findAll({
-      // explicitly select only the id and email fields - even though
-      // users' passwords are encrypted, it won't help if we just
-      // send everything to anyone who asks!
-      attributes: ['id', 'email']
+    const response = await Restaurant.findAll({
+      where: {
+        cuisine: 'Thai'
+      }
     })
-    res.json(users)
+    res.json(response)
   } catch (err) {
+    console.log('get Food not working', err)
     next(err)
   }
 })
