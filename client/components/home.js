@@ -21,6 +21,7 @@ class Home extends Component {
         <table>
           <thead>
             <tr>
+              <th />
               <th>Restaurant</th>
               <th>Grade</th>
               <th>Borough</th>
@@ -28,13 +29,16 @@ class Home extends Component {
           </thead>
           <tbody>
             {restaurants ? (
-              restaurants.map(restaurant => (
-                <tr key={restaurant.camis}>
-                  <td>{restaurant.dba}</td>
-                  <td>{restaurant.inspections[0].grade}</td>
-                  <td>{restaurant.boro}</td>
-                </tr>
-              ))
+              restaurants
+                .filter((restaurant, index) => index < 10)
+                .map((restaurant, index) => (
+                  <tr key={restaurant.camis}>
+                    <td>{index + 1}</td>
+                    <td>{restaurant.dba}</td>
+                    <td>{restaurant.inspections[0].grade}</td>
+                    <td>{restaurant.boro}</td>
+                  </tr>
+                ))
             ) : (
               <div>No restaurants loaded</div>
             )}
