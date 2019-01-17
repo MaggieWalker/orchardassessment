@@ -6,12 +6,12 @@ Inspection.belongsTo(Restaurant, {foreignKey: 'restaurantId'}) //one-to-one rela
 Restaurant.hasMany(Inspection, {foreignKey: 'restaurantId'}) //one-to-many relationship
 
 Inspection.belongsToMany(Violation, {
-  through: 'InspectionViolation',
-  foreignKey: 'inspectionId'
+  through: 'InspectionViolation'
+  // foreignKey: 'inspectionId'
 }) //many-to-many relationship
 Violation.belongsToMany(Inspection, {
-  through: 'InspectionViolation',
-  foreignKey: 'violationId'
+  through: 'InspectionViolation'
+  // foreignKey: 'violationId'
 }) //many-to-many relationship
 
 module.exports = {
