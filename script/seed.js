@@ -1,7 +1,6 @@
 'use strict'
 
 const db = require('../server/db')
-const {Restaurant, Violation} = require('../server/db/models')
 const fs = require('fs')
 const etl = require('etl')
 const pg = require('pg')
@@ -86,7 +85,7 @@ async function seed() {
           inspectiontype: inspection['INSPECTION TYPE'],
           createdAt: new Date(),
           updatedAt: new Date(),
-          violationId: inspection['VIOLATION CODE'],
+          violationCode: inspection['VIOLATION CODE'],
           restaurantId: inspection.CAMIS
         }
       })
@@ -118,50 +117,3 @@ if (module === require.main) {
 }
 
 module.exports = seed
-
-// const restaurants = await Promise.all([
-//   Restaurant.create({
-//     camis: '30075445',
-//     dba: 'MORRIS PARK BAKE SHOP',
-//     boro: 'BRONX',
-//     building: '1007',
-//     street: 'MORRIS PARK AVE',
-//     zipcode: '10462',
-//     phone: '7188924544',
-//     cuisine: 'Bakery',
-//     inspectiondate: new Date(Date.UTC(2017, 4, 18)),
-//     action: 'Violations were cited in the following area(s).',
-//     score: 7,
-//     grade: 'A',
-//     gradedate: new Date(Date.UTC(2017, 4, 18)),
-//     recorddate: new Date(Date.UTC(2010, 0, 13)),
-//     inspectiontype: 'Cycle Inspection / Initial Inspection'
-//   })
-// ])
-
-// Restaurant.bulkCreate({
-//   camis: inspection.CAMIS,
-//   dba: inspection.DBA,
-//   recorddate: inspection['RECORD DATE'],
-//   inspectiondate: inspection['INSPECTION DATE'],
-//   boro: inspection.BORO,
-//   building: inspection.BUILDING,
-//   street: inspection.STREET,
-//   zipcode: inspection.ZIPCODE,
-//   phone: inspection.PHONE,
-//   cuisine: inspection.CUISINE,
-//   action: inspection.ACTION,
-//   score: inspection.SCORE,
-//   grade: inspection.GRADE,
-//   gradedate: inspection['GRADE DATE'],
-//   inspectiontype: inspection['INSPECTION TYPE']
-// })
-// // .pipe(etl.postgres.upsert(pool,'testschema', 'testable', {concurrency: 4}))
-// const violations = await Promise.all([
-//   Violation.create({
-//     code: '10F',
-//     description:
-//       'Non-food contact surface improperly constructed. Unacceptable material used. Non-food contact surface or equipment improperly maintained and/or not properly sealed, raised, spaced or movable to allow accessibility for cleaning on all sides, above and underneath the unit.',
-//     criticalflag: 'Not Critical'
-//   })
-// ])
