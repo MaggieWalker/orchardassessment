@@ -18,15 +18,28 @@ class Navbar extends Component {
         <nav />
         <hr />
         <h2>Where should my friend eat?</h2>
-        <ul>
-          {restaurants ? (
-            restaurants.map(restaurant => (
-              <li key={restaurant.camis}>{restaurant.dba}</li>
-            ))
-          ) : (
-            <div>No restaurants loaded</div>
-          )}
-        </ul>
+        <table>
+          <thead>
+            <tr>
+              <th>Restaurant</th>
+              <th>Grade</th>
+              <th>Borough</th>
+            </tr>
+          </thead>
+          <tbody>
+            {restaurants ? (
+              restaurants.map(restaurant => (
+                <tr key={restaurant.camis}>
+                  <td>{restaurant.dba}</td>
+                  <td>{restaurant.inspections[0].grade}</td>
+                  <td>{restaurant.boro}</td>
+                </tr>
+              ))
+            ) : (
+              <div>No restaurants loaded</div>
+            )}
+          </tbody>
+        </table>
       </div>
     )
   }
