@@ -28,7 +28,7 @@ export const gotFood = food => ({type: GOT_FOOD, food})
 export const fetchFood = () => {
   return async dispatch => {
     try {
-      const response = await axios.get('/api/users')
+      const response = await axios.get('/api/food')
       const foodData = response.data
       console.log('food response in store', response.data)
       const action = gotFood(foodData)
