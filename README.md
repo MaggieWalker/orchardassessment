@@ -13,6 +13,10 @@ https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Inspection-R
 
 https://github.com/MaggieWalker/orchardassessment
 
+## Code Walkthrough
+
+https://www.youtube.com/watch?v=8MwJAJQOJ78&feature=youtu.be
+
 ## 😎 Getting Started
 
 1.  Fork and clone this repo
