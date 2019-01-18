@@ -20,6 +20,9 @@ const Inspection = db.define('inspection', {
   recorddate: {
     type: Sequelize.DATE
   },
+  violationCode: {
+    type: Sequelize.STRING
+  },
   inspectiontype: {
     type: Sequelize.STRING
   }
