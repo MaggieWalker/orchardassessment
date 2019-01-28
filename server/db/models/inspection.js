@@ -2,6 +2,10 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const Inspection = db.define('inspection', {
+  inspectionId: {
+    type: Sequelize.STRING,
+    primaryKey: true
+  },
   inspectiondate: {
     type: Sequelize.DATE
   },

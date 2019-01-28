@@ -8,12 +8,14 @@ Restaurant.hasMany(Inspection, {foreignKey: 'restaurantId'}) //one-to-many relat
 //Still working on populating join table -- possible syntax issue with naming of columns
 Inspection.belongsToMany(Violation, {
   through: 'InspectionViolation',
-  foreignKey: 'inspecionId'
-}) //many-to-many relationship
+  foreignKey: 'inspectionId',
+  otherKey: 'violationId'
+})
 Violation.belongsToMany(Inspection, {
   through: 'InspectionViolation',
-  foreignKey: 'violationCode'
-}) //many-to-many relationship
+  foreignKey: 'violationId',
+  otherKey: 'inspectionId'
+})
 
 module.exports = {
   Restaurant,

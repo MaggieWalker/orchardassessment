@@ -55,7 +55,7 @@ async function seed() {
     .pipe(
       etl.map(inspection => {
         return {
-          code: inspection['VIOLATION CODE'],
+          violationCode: inspection['VIOLATION CODE'],
           description: inspection['VIOLATION DESCRIPTION'],
           criticalflag: inspection['CRITICAL FLAG'],
           createdAt: new Date(),
@@ -76,6 +76,7 @@ async function seed() {
     .pipe(
       etl.map(inspection => {
         return {
+          inspectionId: `${inspection['INSPECTION DATE']}${inspection.CAMIS}`,
           inspectiondate: inspection['INSPECTION DATE'],
           action: inspection.ACTION,
           score: inspection.SCORE,
@@ -85,7 +86,6 @@ async function seed() {
           inspectiontype: inspection['INSPECTION TYPE'],
           createdAt: new Date(),
           updatedAt: new Date(),
-          violationCode: inspection['VIOLATION CODE'],
           restaurantId: inspection.CAMIS
         }
       })

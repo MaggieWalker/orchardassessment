@@ -2,7 +2,7 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const Violation = db.define('violation', {
-  code: {
+  violationCode: {
     type: Sequelize.STRING,
     allowNull: false,
     primaryKey: true
