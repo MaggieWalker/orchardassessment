@@ -95,6 +95,25 @@ async function seed() {
     .then(() => console.log('done with Inspections!'))
     .catch(error => console.log('Caught error', error.message))
 
+  await fs
+    .createReadStream(
+      'public/DOHMH_New_York_City_Restaurant_Inspection_Results.csv'
+    )
+    .pipe(etl.csv())
+    .pipe(
+      etl.map(inspection => {
+        return {
+          inspectionId: `${inspection['INSPECTION DATE']}${inspection.CAMIS}`,
+          violationId: inspection['VIOLATION CODE'],
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }
+      })
+    )
+    .pipe(etl.postgres.upsert(pool, 'public', 'inspectionviolation'))
+    .promise()
+    .then(() => console.log('done with InspectionViolation join table!'))
+    .catch(error => console.log('Caught error', error.message))
   console.log(`seeded successfully`)
 }
 

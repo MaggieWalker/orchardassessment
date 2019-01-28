@@ -7,12 +7,12 @@ Restaurant.hasMany(Inspection, {foreignKey: 'restaurantId'}) //one-to-many relat
 
 //Still working on populating join table -- possible syntax issue with naming of columns
 Inspection.belongsToMany(Violation, {
-  through: 'InspectionViolation',
+  through: 'inspectionviolation',
   foreignKey: 'inspectionId',
   otherKey: 'violationId'
 })
 Violation.belongsToMany(Inspection, {
-  through: 'InspectionViolation',
+  through: 'inspectionviolation',
   foreignKey: 'violationId',
   otherKey: 'inspectionId'
 })
